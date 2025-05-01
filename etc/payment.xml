@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<!--
+ /**
+ * @package    Saulmoralespa_WompiPa
+ * @author     Saúl Morales Pacheco
+ * @license    https://opensource.org/licenses/MIT  MIT License
+ */
+-->
+<payment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Payment:etc/payment.xsd">
+    <methods>
+        <method name="wompipa">
+            <allow_multiple_address>1</allow_multiple_address>
+        </method>
+    </methods>
+</payment>

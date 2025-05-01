@@ -1,0 +1,56 @@
+name: Magento 2 Module CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: magento
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: curl, dom, intl, json, openssl
+          coverage: xdebug
+      - name: Verify PHP Installation
+        run: php -v
+
+      - name: install && build Magento
+        id: build-magento
+        run: bash bin/install-mg2.sh 2.4.4-p10
+
+      - name: Install MP Plugin
+        id: install-plugin
+        run: mkdir magento2/app/code/Saulmoralespa/ && mkdir magento2/app/code/Saulmoralespa/WompiPa/ && mv $(ls --ignore='bin' --ignore='.github' --ignore='magento2') magento2/app/code/Saulmoralespa/WompiPa && ls
+
+      - name: Run Unit Test
+        id: unit-test
+        run:
+          XDEBUG_MODE=coverage magento2/vendor/phpunit/phpunit/phpunit \
+            --configuration magento2/app/code/Saulmoralespa/WompiPa/phpunit.xml \
+            --coverage-html coverage/ \
+            --coverage-clover coverage/clover.xml \
+            --colors=always \
+            --coverage-filter magento2/app/code/Saulmoralespa/WompiPa

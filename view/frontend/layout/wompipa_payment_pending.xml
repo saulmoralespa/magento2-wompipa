@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+ /**
+ * @package    Saulmoralespa_WompiPa
+ * @author     Saúl Morales Pacheco
+ * @license    https://opensource.org/licenses/MIT  MIT License
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceContainer name="content">
+        <block class="Saulmoralespa\WompiPa\Block\Pending" name="wompipa_pending" template="Saulmoralespa_WompiPa::pending.phtml" />
+    </referenceContainer>
+</page>

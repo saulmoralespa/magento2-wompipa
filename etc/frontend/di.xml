@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+ /**
+ * @package    Saulmoralespa_WompiPa
+ * @author     Saúl Morales Pacheco
+ * @license    https://opensource.org/licenses/MIT  MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="wompipa_custom_provider" xsi:type="object">Saulmoralespa\WompiPa\Model\Config\CustomConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

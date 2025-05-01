@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+ /**
+ * @package    Saulmoralespa_WompiPa
+ * @author     Saúl Morales Pacheco
+ * @license    https://opensource.org/licenses/MIT  MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="wompipa" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1" translate="label">
+                <label>Wompi Panamá</label>
+                <comment><![CDATA[Config URL events <a href='https://comercios.wompi.pa/developers' target="_blank">here</a>.]]></comment>
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="environment" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Environment</label>
+                    <comment>Set to No if you are going to production Mode</comment>
+                    <source_model>Saulmoralespa\WompiPa\Model\Config\Source\Environment</source_model>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <include path="Saulmoralespa_WompiPa::system/environment.xml"/>
+                <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sort Order</label>
+                    <frontend_class>validate-number</frontend_class>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

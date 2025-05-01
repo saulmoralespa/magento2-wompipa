@@ -1,0 +1,13 @@
+<?php
+/**
+* @var $block \Saulmoralespa\WompiPa\Block\Form\WompiPa
+*/
+?>
+<fieldset class="admin__fieldset payment-method" id="payment_form_<?php /* @escapeNotVerified */ echo $block->getMethodCode() ?>" style="display:none;">
+    <legend class="admin__legend">
+        <?= __('Pay securely with Wompi') ?>
+    </legend>
+    <div class="admin__field">
+        <p><?= __('You will be redirected to Wompi to complete your payment.') ?></p>
+    </div>
+</fieldset>

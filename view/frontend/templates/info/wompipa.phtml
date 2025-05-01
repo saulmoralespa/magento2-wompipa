@@ -1,0 +1,29 @@
+<?php
+/**
+ * @var \Magento\Payment\Block\Info $block
+ * @see \Magento\Payment\Block\Info
+ */
+$specificInfo = $block->getSpecificInformation();
+$title = $block->getMethod()->getTitle();
+?>
+    <dl class="payment-method">
+        <dt class="title"><?= $block->escapeHtml($title); ?></dt>
+        <?php if ($specificInfo):?>
+            <dd class="content">
+                <table class="data table">
+                    <caption class="table-caption"><?= $block->escapeHtml($title); ?></caption>
+                    <?php foreach ($specificInfo as $label => $value):?>
+                        <tr>
+                            <th scope="row"><?= $block->escapeHtml($label)?></th>
+                            <td>
+                                <?= $block->escapeHtml(
+                                    nl2br($block->escapeHtml(implode("\n", $block->getValueAsArray($value, true))))
+                                );?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </dd>
+        <?php endif;?>
+    </dl>
+<?= $block->escapeHtml($block->getChildHtml())?>

@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!--
+ /**
+ * @package    Saulmoralespa_WompiPa
+ * @author     Saúl Morales Pacheco
+ * @license    https://opensource.org/licenses/MIT  MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Saulmoralespa\WompiPa\Logger\Handler\System">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Saulmoralespa\WompiPa\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Saulmoralespa\WompiPa\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">wompipa</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Saulmoralespa\WompiPa\Logger\Handler\System</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="WompiPaFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">Saulmoralespa\WompiPa\Gateway\Config\WompiPa::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Saulmoralespa\WompiPa\Block\Form\WompiPa</argument>
+            <argument name="infoBlockType" xsi:type="string">Saulmoralespa\WompiPa\Block\Info\WompiPa</argument>
+            <argument name="valueHandlerPool" xsi:type="object">WompiPaValueHandlerPool</argument>
+            <argument name="validatorPool" xsi:type="object">WompiPaValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">WompiPaCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WompiPaConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">Saulmoralespa\WompiPa\Gateway\Config\WompiPa::CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WompiPaConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">WompiPaConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WompiPaValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">WompiPaConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WompiPaValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="currency" xsi:type="string">WompiPaCurrencyValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WompiPaCurrencyValidator" type="Saulmoralespa\WompiPa\Gateway\Validator\CurrencyValidator">
+        <arguments>
+            <argument name="config" xsi:type="object">WompiPaConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WompiPaCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="initialize" xsi:type="string">WompiPaInitializeCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WompiPaInitializeCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">WompiPaInitializeRequest</argument>
+            <argument name="handler" xsi:type="object">WompiPaAuthorizeHandler</argument>
+            <argument name="client" xsi:type="object">Saulmoralespa\WompiPa\Gateway\Http\Client</argument>
+            <argument name="transferFactory" xsi:type="object">Saulmoralespa\WompiPa\Gateway\Http\TransferFactory</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="WompiPaInitializeRequest" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="payment" xsi:type="string">Saulmoralespa\WompiPa\Gateway\Request\InitializeRequest</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="WompiPaAuthorizeHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="fetch" xsi:type="string">Saulmoralespa\WompiPa\Gateway\Response\PaymentDetailsHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>
